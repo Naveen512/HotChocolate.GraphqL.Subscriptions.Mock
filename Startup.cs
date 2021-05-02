@@ -39,6 +39,18 @@ namespace HotChoco.Pub.Sub.InMemo
             .AddSubscriptionType<SubscriptionObjectType>()
             .AddMutationType<MutationObjectType>()
             .AddQueryType<QueryObjectType>();
+
+            services.AddCors(options =>
+           {
+               options.AddPolicy(name: "corsService",
+                                 builder =>
+                                 {
+                                     builder.AllowAnyOrigin();
+                                     builder.AllowAnyHeader();
+                                     builder.AllowAnyMethod();
+                                 });
+
+           });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,7 +66,7 @@ namespace HotChoco.Pub.Sub.InMemo
             app.UseHttpsRedirection();
             app.UseWebSockets();
             app.UseRouting();
-
+            app.UseCors("corsService");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
